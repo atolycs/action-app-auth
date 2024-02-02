@@ -37352,7 +37352,7 @@ async function run() {
 
     core.info(`App Token Generated: ${auth_app_token.token}`);
     core.info(`==> Bot user infomation setup`);
-    await request('GET /users/{username}/installation', {
+    let { data } = await request('GET /users/{username}/installation', {
       username: codeOwner,
       request: {
         headers: {
@@ -37362,6 +37362,8 @@ async function run() {
         hook: auth.hook,
       },
     });
+
+    core.info(data)
   } catch (error) {
     core.setFailed(error);
   }
