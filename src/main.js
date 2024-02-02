@@ -27,13 +27,17 @@ async function run() {
     const auth_app_token = await auth({
       type: 'app',
     });
+
     core.info(`App Token Generated: ${auth_app_token.token}`);
     core.info(`==> Bot user infomation setup`);
     await request('GET /users/{username}/installation', {
       username: codeOwner,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-        authorization: auth_app_token.token,
+      request: {
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28',
+          authorization: auth_app_token.token,
+        },
+        hook: auth.hook,
       },
     });
   } catch (error) {
