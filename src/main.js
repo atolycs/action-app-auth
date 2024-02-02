@@ -23,8 +23,10 @@ async function run() {
                 type: "app"
             })
 
+    const bot_infomation = await appOctokit.request('GET /user')
     console.log(data);
     console.log(token)
+    console.log(bot_infomation)
   } catch (error) {
     core.setFailed(error);
   }
