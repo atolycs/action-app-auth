@@ -41,7 +41,9 @@ async function run() {
       },
     });
 
-    core.info(data)
+    core.info(data.id)
+
+    
   } catch (error) {
     core.setFailed(error);
   }
