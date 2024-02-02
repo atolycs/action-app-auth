@@ -72,7 +72,8 @@ async function run() {
       username: bot_name
     })).data;
 
-    core.info(app_user_result)
+    core.info(`==> ${app_user_result.id}\n
+      ==> ${app_user_result.login}`)
 
   } catch (error) {
     core.setFailed(error);
