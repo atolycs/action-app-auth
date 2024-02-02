@@ -40535,7 +40535,7 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const core = __nccwpck_require__(2186);
-const { Octokit } = __nccwpck_require__(5375);
+const { Octokit, App } = __nccwpck_require__(5375);
 const { createAppAuth } = __nccwpck_require__(7541);
 
 async function run() {
@@ -40551,13 +40551,16 @@ async function run() {
       },
     });
 
-    //const { data } = await appOctokit.request('/app');
+    appOctokit.getInstallationOctokit()
+
+    const { data } = await appOctokit.request('/app');
     //const { data } = await appOctokit.request('/user')
-    const { data } = await appOctokit.auth({
-                type: "installation"
+    const { token } = await appOctokit.auth({
+                type: "app"
             })
 
     console.log(data);
+    console.log(token)
   } catch (error) {
     core.setFailed(error);
   }

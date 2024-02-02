@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const { Octokit } = require('@octokit/rest');
+const { Octokit, App } = require('@octokit/rest');
 const { createAppAuth } = require('@octokit/auth-app');
 
 async function run() {
@@ -15,13 +15,16 @@ async function run() {
       },
     });
 
-    //const { data } = await appOctokit.request('/app');
+    appOctokit.getInstallationOctokit()
+
+    const { data } = await appOctokit.request('/app');
     //const { data } = await appOctokit.request('/user')
-    const { data } = await appOctokit.auth({
-                type: "installation"
+    const { token } = await appOctokit.auth({
+                type: "app"
             })
 
     console.log(data);
+    console.log(token)
   } catch (error) {
     core.setFailed(error);
   }
