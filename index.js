@@ -37359,23 +37359,26 @@ async function run() {
       },
     });
 
-    core.info('Get User Installation ID.');
-
-    const auth_token = await auth({
-      type: 'installation',
-      installationId: authentication.data.id,
-    });
+    core.setSecret(authentication.data.id);
+    core.info(`==> Get User Installation ID.`);
+    core.info(authentication.data.id);
+    core.info(`==> Getting Bot commit User data...`);
 
     const user_info = await request(`GET /user`, {
       request: {
         hook: auth.hook,
         headers: {
-          authentication: `token ${auth_token}`,
+          authentication: `token ${auth_app_token.token}`,
         },
       },
     });
 
-    core.setSecret(auth_token.token);
+    /*const auth_token = await auth({
+      type: 'installation',
+      installationId: authentication.data.id,
+    });*/
+
+    //core.setSecret(auth_token.token);
     //core.setOutput("token", auth_token.token)
     console.log(user_info);
   } catch (error) {
