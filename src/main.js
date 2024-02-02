@@ -41,12 +41,6 @@ async function run() {
     core.info(`==> Get User Installation ID.`);
     core.info(authentication.data.id);
     core.info(`==> Getting Bot commit User data...`);
-
-    const auth_token = auth({
-      type: 'installation',
-      installationId: authentication.data.id,
-    });
-
     const user_info = await request(`GET /user`, {
       request: {
         hook: auth.hook,
@@ -54,6 +48,13 @@ async function run() {
           authentication: `token ${auth_token.token}`,
         },
       },
+    });
+
+    core.info(user_info)
+
+    const auth_token = auth({
+      type: 'installation',
+      installationId: authentication.data.id,
     });
 
     /*const auth_token = await auth({
