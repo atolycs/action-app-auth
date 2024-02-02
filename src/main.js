@@ -15,7 +15,8 @@ async function run() {
       },
     });
 
-    const { data } = await appOctokit.request('/app');
+    //const { data } = await appOctokit.request('/app');
+    const { data } = await appOctokit.request('/user')
     /* const { token } = await appOctokit.auth({
                 type: "isntallation"
             })*/
