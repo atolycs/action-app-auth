@@ -44927,6 +44927,7 @@ async function run() {
     core.setOutput('token', authentication.token);
     core.setOutput('commit_name', bot_user_name);
     core.setOutput('commit_address', bot_commit_address);
+    core.saveState('token', authentication.token);
   } catch (error) {
     core.setFailed(error);
   }
