@@ -37335,12 +37335,13 @@ async function run() {
     const auth = createAppAuth({
       appId: appID,
       privateKey: privateKey,
+      request: request
     });
 
     core.debug("===> auth setup.")
 
-    core.info("==> Installation ")
-    let authentication = await request(`GET /users/{username}/installation`, {
+    core.info("==> User Installation ID Getting ")
+    let authentication = await request("GET /users/{username}/installation", {
       username: codeOwner,
       request: {
         hook: auth.hook,
