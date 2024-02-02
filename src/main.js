@@ -8,9 +8,10 @@ async function run() {
     const appID = core.getInput('appID', { required: true });
     const privateKey = core.getInput('privateKey', { required: true });
     //const repo_info = process.env.GITHUB_REPOSITORY
-
-    const codeOwner = process.env.GITHUB_REPOSITORY_OWNER;
-    const parsedRepository = process.env.GITHUB_REPOSITORY.split('/')[1];
+    let codeOwner, parsedRepository;
+    [codeOwner, parsedRepository] = String(process.env.GITHUB_REPOSITORY).split('/');
+    //const codeOwner = process.env.GITHUB_REPOSITORY_OWNER;
+    //const parsedRepository = process.env.GITHUB_REPOSITORY.split('/')[1];
 
     core.info('==> Setup Token...');
 
@@ -74,7 +75,7 @@ async function run() {
 
     core.info(`==> Revoke User Installation Token`);
     octokit.rest.apps.revokeInstallationAccessToken();
-    
+
     core.info(`==> Token revoked`);
     core.info(`==> Generating Repository Token`);
 
@@ -89,7 +90,7 @@ async function run() {
     const authentication = await auth({
       type: 'installation',
       installationId: response.data.id,
-      repositoryNames: parsedRepository,
+      repositoryNames: parsedRepository.split(','),
     });
 
     core.info(`==> Token generated`);
