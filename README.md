@@ -4,8 +4,8 @@
 
 
 ## Input
-* `appID`: Github App ID
-* `privateKey`: Github App Private Key
+* `app-id`: Github App ID
+* `private-key`: Github App Private Key
 
 ## Output
 * `token`: Github App Access Token

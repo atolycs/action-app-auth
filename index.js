@@ -44834,8 +44834,8 @@ const { request } = __nccwpck_require__(6234);
 
 async function run() {
   try {
-    const appID = core.getInput('appID', { required: true });
-    const privateKey = core.getInput('privateKey', { required: true });
+    const appID = core.getInput('app-id', { required: true });
+    const privateKey = core.getInput('private-Key', { required: true });
     //const repo_info = process.env.GITHUB_REPOSITORY
     let codeOwner, parsedRepository;
     [codeOwner, parsedRepository] = String(process.env.GITHUB_REPOSITORY).split('/');

@@ -2,10 +2,10 @@ name: Github App Authenticator (commiter)
 description: Test App Authentication with Github REST API /user
 
 inputs:
-   appID:
+   app-id:
      required: true
      description: Github App ID
-   privateKey:
+   private-key:
      requied: true
      description: Github App Private Key
 
