@@ -1,0 +1,14 @@
+name: Test Github App Auth
+
+on:
+  workflow_dispatch:
+
+jobs:
+   auth_in:
+     runs-on: ubuntu-latest
+     steps:
+        - name: Sign in Github Apps
+          uses: ./
+          with:
+            appID: ${{ secrets.APP_ID }}
+            privateKey: ${{ secrets.APP_PEM }}

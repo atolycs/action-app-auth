@@ -3,23 +3,27 @@ const { Octokit } = require('@octokit/rest');
 const { createAppAuth } = require('@octokit/auth-app');
 
 async function run() {
-  const appID = core.getInput('appID', { required: true });
-  const privateKey = core.getInput('privateKey', { required: true });
+  try {
+    const appID = core.getInput('appID', { required: true });
+    const privateKey = core.getInput('privateKey', { required: true });
 
-  const appOctokit = new Octokit({
-    authStrategy: createAppAuth,
-    auth: {
-      appId: appID,
-      privateKey: privateKey,
-    },
-  });
+    const appOctokit = new Octokit({
+      authStrategy: createAppAuth,
+      auth: {
+        appId: appID,
+        privateKey: privateKey,
+      },
+    });
 
-  const { data } = await appOctokit.request('/app');
-  /* const { token } = await appOctokit.auth({
-        type: "isntallation"
-    })*/
+    const { data } = await appOctokit.request('/app');
+    /* const { token } = await appOctokit.auth({
+                type: "isntallation"
+            })*/
 
-  console.log(data);
+    console.log(data);
+  } catch (error) {
+    core.setFailed(error);
+  }
 }
 
 run();
