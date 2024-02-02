@@ -73,12 +73,12 @@ async function run() {
     core.info(`==> Commit-Address: ${bot_commit_address}`);
 
     core.info(`==> Revoke User Installation Token`);
-    await request('DELETE /installation/token', {
+    /*await request('DELETE /installation/token', {
       headers: {
-        authorization: `token ${data.id}`,
+        authorization: `token ${}`,
       },
-    });
-
+    });*/
+    await octokit.rest.apps.deleteToken();
     core.info(`==> Token revoked`);
     core.info(`==> Generating Repository Token`);
 
