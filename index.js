@@ -40551,7 +40551,7 @@ async function run() {
       },
     });
 
-    appOctokit.getInstallationOctokit()
+    //appOctokit.getInstallationOctokit()
 
     const { data } = await appOctokit.request('/app');
     //const { data } = await appOctokit.request('/user')
