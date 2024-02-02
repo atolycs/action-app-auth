@@ -40552,10 +40552,10 @@ async function run() {
     });
 
     //const { data } = await appOctokit.request('/app');
-    const { data } = await appOctokit.request('/user')
-    /* const { token } = await appOctokit.auth({
-                type: "isntallation"
-            })*/
+    //const { data } = await appOctokit.request('/user')
+    const { data } = await appOctokit.auth({
+                type: "installation"
+            })
 
     console.log(data);
   } catch (error) {
