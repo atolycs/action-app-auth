@@ -37353,9 +37353,13 @@ async function run() {
       username: codeOwner,
       request: {
         hook: auth.hook,
-        authentication: `token ${auth_app_token.token}`,
+        headers: {
+          authentication: `token ${auth_app_token.token}`,
+        },
       },
     });
+
+    core.info('Get User Installation ID.');
 
     const auth_token = await auth({
       type: 'installation',
@@ -37363,8 +37367,11 @@ async function run() {
     });
 
     const user_info = await request(`GET /user`, {
-      headers: {
-        authentication: `token ${auth_token}`,
+      request: {
+        hook: auth.hook,
+        headers: {
+          authentication: `token ${auth_token}`,
+        },
       },
     });
 
