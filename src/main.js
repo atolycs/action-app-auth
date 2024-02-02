@@ -60,9 +60,14 @@ async function run() {
 
     core.info('==> Getting Bot user data');
     let app_info = await octokit.request('GET /app');
+    core.info(`==> ${app_info}`)
     const bot_name = `${app_info.slug}[bot]`;
 
-    let app_user_result = await octokit.request(`GET /users/${bot_name}`);
+    let app_user_result = await octokit.request(
+      `GET /users/{username}`,
+    {
+      username: bot_name
+    });
 
     core.info(bot_name);
     core.info(JSON.parse(app_user_result));
