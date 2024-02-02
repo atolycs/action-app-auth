@@ -37337,7 +37337,10 @@ async function run() {
       privateKey: privateKey,
     });
 
-    let authentication = await request(`GET /users/${codeOwner}/installation`, {
+    core.debug("===> auth setup.")
+
+    core.info("==> Installation ")
+    let authentication = await request(`GET /users/{username}/installation`, {
       username: codeOwner,
       request: {
         hook: auth.hook,
