@@ -44891,6 +44891,7 @@ async function run() {
     let app_info = await octokit.request('GET /app');
     core.info(`==> ${app_info}`)
     const bot_name = `${app_info.slug}[bot]`;
+    core.info(bot_name)
 
     let app_user_result = await octokit.request(
       `GET /users/{username}`,
