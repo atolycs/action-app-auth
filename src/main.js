@@ -42,11 +42,16 @@ async function run() {
     core.info(authentication.data.id);
     core.info(`==> Getting Bot commit User data...`);
 
+    const auth_token = auth({
+      type: 'installation',
+      installationId: authentication.data.id,
+    });
+
     const user_info = await request(`GET /user`, {
       request: {
         hook: auth.hook,
         headers: {
-          authentication: `token ${auth_app_token.token}`,
+          authentication: `token ${auth_token.token}`,
         },
       },
     });
