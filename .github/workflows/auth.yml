@@ -12,6 +12,12 @@ jobs:
           
         - name: Sign in Github Apps
           uses: ./
+          id: generate-token
           with:
             appID: ${{ secrets.APP_ID }}
             privateKey: ${{ secrets.APP_PEM }}
+        - name: Test Github CLI API
+          env:
+            GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          run: |
+            gh api /octocat
