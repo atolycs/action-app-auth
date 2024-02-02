@@ -43,7 +43,15 @@ async function run() {
 
     core.info(data.id)
 
-    
+    core.info("==> Generating Temporary Token")
+    const auth_user_token = await auth({
+      type: "installation",
+      installationId: data.id
+    })
+
+    core.info(auth_user_token.token)
+
+
   } catch (error) {
     core.setFailed(error);
   }
