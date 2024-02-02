@@ -59,7 +59,7 @@ async function run() {
     })*/
 
     core.info('==> Getting Bot user data');
-    await core.info(octokit.request('GET /user'));
+    await core.info(octokit.request('GET /app'));
   } catch (error) {
     core.setFailed(error);
   }
