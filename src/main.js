@@ -51,6 +51,17 @@ async function run() {
 
     core.info(auth_user_token.token)
 
+    core.info("==> Getting Bot user data")
+    await core.info(
+      request("GET /app", {
+        request: {
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28',
+            authorization: auth_user_token.token
+          }
+        }
+      })
+    )
 
   } catch (error) {
     core.setFailed(error);
