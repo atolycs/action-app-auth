@@ -42,6 +42,7 @@ async function run() {
       },
     });
 
+    core.setSecret(data.id)
     core.info(`==> Get User Installation ID: ${data.id}`);
     //core.info(auth_user_token.token)
 
@@ -65,16 +66,14 @@ async function run() {
     const bot_name = `${app_info.slug}[bot]`;
     core.info(bot_name)
 
-    let app_user_result = await octokit.request(
+    let app_user_result = (await octokit.request(
       `GET /users/{username}`,
     {
       username: bot_name
-    });
+    })).data;
 
-    core.info(bot_name);
-    core.info(JSON.parse(app_user_result));
+    core.info(app_user_result)
 
-    await core.info(octokit.request('GET /app'));
   } catch (error) {
     core.setFailed(error);
   }
