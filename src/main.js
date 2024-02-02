@@ -1,4 +1,5 @@
 const core = require('@actions/core');
+const { App } = require('octokit');
 const { createAppAuth } = require('@octokit/auth-app');
 const { request } = require('@octokit/request');
 
@@ -41,28 +42,24 @@ async function run() {
       },
     });
 
-    core.info(data.id)
+    core.info(`==> Get User Installation ID: ${data.id}`);
+    //core.info(auth_user_token.token)
 
-    core.info("==> Generating Temporary Token")
+    const app = new App({
+      appId: appID,
+      privateKey: privateKey,
+    });
+
+    const octokit = await app.getInstallationOctokit(data.id);
+
+    /*    core.info("==> Generating Temporary Token")
     const auth_user_token = await auth({
       type: "installation",
       installationId: data.id
-    })
+    })*/
 
-    core.info(auth_user_token.token)
-
-    core.info("==> Getting Bot user data")
-    await core.info(
-      request("GET /app", {
-        request: {
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28',
-            authorization: auth_user_token.token
-          }
-        }
-      })
-    )
-
+    core.info('==> Getting Bot user data');
+    await core.info(octokit.request('GET /user'));
   } catch (error) {
     core.setFailed(error);
   }
