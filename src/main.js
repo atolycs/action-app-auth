@@ -1,32 +1,41 @@
 const core = require('@actions/core');
-const { Octokit, App } = require('@octokit/rest');
 const { createAppAuth } = require('@octokit/auth-app');
+const { request } = require('@octokit/request');
 
 async function run() {
   try {
     const appID = core.getInput('appID', { required: true });
     const privateKey = core.getInput('privateKey', { required: true });
+    const codeOwner = String(process.env.GITHUB_REPOSITORY).split('/')[0];
 
-    const appOctokit = new Octokit({
-      authStrategy: createAppAuth,
-      auth: {
-        appId: appID,
-        privateKey: privateKey,
+    core.info('==> Setup Token...');
+
+    const auth = createAppAuth({
+      appId: appID,
+      privateKey: privateKey,
+    });
+
+    let authentication = await request(`GET /users/${codeOwner}/installation`, {
+      username: codeOwner,
+      request: {
+        hook: auth.hook,
       },
     });
 
-    //appOctokit.getInstallationOctokit()
+    const auth_token = await auth({
+      type: 'installation',
+      installationId: authentication.data.id,
+    });
 
-    const { data } = await appOctokit.request('/app');
-    //const { data } = await appOctokit.request('/user')
-    const { token } = await appOctokit.auth({
-                type: "app"
-            })
+    const user_info = await request(`GET /user`, {
+      headers: {
+        authentication: `token ${auth_token}`,
+      },
+    });
 
-    const bot_infomation = await appOctokit.request('GET /user')
-    console.log(data);
-    console.log(token)
-    console.log(bot_infomation)
+    core.setSecret(auth_token.token);
+    //core.setOutput("token", auth_token.token)
+    console.log(user_info);
   } catch (error) {
     core.setFailed(error);
   }
