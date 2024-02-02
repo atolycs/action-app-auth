@@ -37330,7 +37330,7 @@ async function run() {
     const privateKey = core.getInput('privateKey', { required: true });
     //const repo_info = process.env.GITHUB_REPOSITORY
 
-    //const codeOwner = process.env.GITHUB_REPOSITORY_OWNER;
+    const codeOwner = process.env.GITHUB_REPOSITORY_OWNER;
     //const codeOwner = repo_info.split("/")[0]
     //const repo_name = repo_info.split("/")[1]
 
@@ -37351,7 +37351,8 @@ async function run() {
     });
     core.info(`App Token Generated: ${auth_app_token.token}`);
     core.info(`==> Bot user infomation setup`);
-    await request('GET /app', {
+    await request('GET /users/{username}/installation', {
+      username: codeOwner,
       headers: {
         'X-GitHub-Api-Version': '2022-11-28',
         authorization: auth_app_token.token,
