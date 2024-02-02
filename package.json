@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx ncc build --out . ./src/**/*.js",
+    "build": "npx ncc build --out . ./src/main.js",
     "lint": "npx eslint ./src/**/*.js",
     "fix": "npx eslint --fix ./src/**/*.js && prettier --write ./src/**/*.js"
   },
@@ -17,5 +17,10 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.4"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@octokit/auth-app": "^6.0.3",
+    "@octokit/rest": "^20.0.2"
   }
 }

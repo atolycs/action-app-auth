@@ -1,0 +1,14 @@
+name: Github App Token Test
+description: Test App Authentication with Github REST API /user
+
+inputs:
+   appID:
+     required: true
+     description: Github App ID
+   privateKey:
+     requied: true
+     description: Github App Private Key
+
+runs:
+  using: node20
+  main: index.js
