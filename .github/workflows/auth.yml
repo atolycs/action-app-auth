@@ -21,4 +21,6 @@ jobs:
             GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           run: |
             gh auth status
+            git config --global user.name ${{ steps.generate-token.outputs.commit_name }}
+            git config --global user.email ${{ steps.generate-token.outputs.commit_address }}
             
