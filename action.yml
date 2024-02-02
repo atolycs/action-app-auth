@@ -9,6 +9,14 @@ inputs:
      requied: true
      description: Github App Private Key
 
+outputs:
+  token:
+    description: "Github installation access token"
+  commit_name:
+    descriptoin: "Github App bot user name"
+  commit_address:
+    description: "Github App commit address"
+
 runs:
   using: node20
   main: index.js

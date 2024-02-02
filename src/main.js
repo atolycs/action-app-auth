@@ -10,8 +10,7 @@ async function run() {
     //const repo_info = process.env.GITHUB_REPOSITORY
 
     const codeOwner = process.env.GITHUB_REPOSITORY_OWNER;
-    //const codeOwner = repo_info.split("/")[0]
-    //const repo_name = repo_info.split("/")[1]
+    const parsedRepository = process.env.GITHUB_REPOSITORY.split('/')[1];
 
     core.info('==> Setup Token...');
 
@@ -42,7 +41,7 @@ async function run() {
       },
     });
 
-    core.setSecret(data.id)
+    core.setSecret(data.id);
     core.info(`==> Get User Installation ID: ${data.id}`);
     //core.info(auth_user_token.token)
 
@@ -53,28 +52,55 @@ async function run() {
 
     const octokit = await app.getInstallationOctokit(data.id);
 
-    /*    core.info("==> Generating Temporary Token")
-    const auth_user_token = await auth({
-      type: "installation",
-      installationId: data.id
-    })*/
-
     core.info('==> Getting Bot user data');
 
-    let app_info = (await octokit.rest.apps.getAuthenticated()).data
+    let app_info = (await octokit.rest.apps.getAuthenticated()).data;
 
     const bot_name = `${app_info.slug}[bot]`;
-    core.info(bot_name)
 
-    let app_user_result = (await octokit.request(
-      `GET /users/{username}`,
-    {
-      username: bot_name
-    })).data;
+    let app_user_result = (
+      await octokit.request(`GET /users/{username}`, {
+        username: bot_name,
+      })
+    ).data;
 
-    core.info(`==> ${app_user_result.id}\n
-      ==> ${app_user_result.login}`)
+    const bot_user_id = app_user_result.id;
+    const bot_user_name = app_user_result.login;
+    const bot_commit_address = `${bot_user_id}+${bot_user_name}@users.noreply.github.com`;
 
+    core.info(`==> Bot commitor setuped`);
+    core.info(`==> Commit Name: ${bot_user_name}`);
+    core.info(`==> Commit-Address: ${bot_commit_address}`);
+
+    core.info(`==> Revoke User Installation Token`);
+    await request('DELETE /installation/token', {
+      headers: {
+        authorization: `token ${data.id}`,
+      },
+    });
+
+    core.info(`==> Token revoked`);
+    core.info(`==> Generating Repository Token`);
+
+    const response = await request('GET /repos/{owner}/{repo}/installation', {
+      owner: codeOwner,
+      repo: parsedRepository,
+      request: {
+        hook: auth.hook,
+      },
+    });
+
+    const authentication = await auth({
+      type: 'installation',
+      installationId: response.data.id,
+      repositoryNames: parsedRepository,
+    });
+
+    core.info(`==> Token generated`);
+    core.setSecret(authentication.token);
+    core.setOutput('token', authentication.token);
+    core.setOutput('commit_name', bot_user_name);
+    core.setOutput('commit_address', bot_commit_address);
   } catch (error) {
     core.setFailed(error);
   }
