@@ -37328,23 +37328,32 @@ async function run() {
   try {
     const appID = core.getInput('appID', { required: true });
     const privateKey = core.getInput('privateKey', { required: true });
-    const codeOwner = String(process.env.GITHUB_REPOSITORY).split('/')[0];
+    //const repo_info = process.env.GITHUB_REPOSITORY
+
+    const codeOwner = process.env.GITHUB_REPOSITORY_OWNER;
+    //const codeOwner = repo_info.split("/")[0]
+    //const repo_name = repo_info.split("/")[1]
 
     core.info('==> Setup Token...');
 
     const auth = createAppAuth({
       appId: appID,
       privateKey: privateKey,
-      request: request
+      request: request.defaults(),
     });
 
-    core.debug("===> auth setup.")
+    core.debug('===> auth setup.');
 
-    core.info("==> User Installation ID Getting ")
-    let authentication = await request("GET /users/{username}/installation", {
+    const auth_app_token = await auth({
+      type: 'app',
+    });
+
+    core.info('==> User Installation ID Getting ');
+    let authentication = await request('GET /users/{username}/installation', {
       username: codeOwner,
       request: {
         hook: auth.hook,
+        authentication: `token ${auth_app_token.token}`,
       },
     });
 
