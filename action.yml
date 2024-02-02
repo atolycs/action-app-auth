@@ -1,4 +1,4 @@
-name: Github App Token Test
+name: Github App Authenticator (commiter)
 description: Test App Authentication with Github REST API /user
 
 inputs:

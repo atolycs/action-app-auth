@@ -44858,8 +44858,9 @@ async function run() {
       type: 'app',
     });
 
-    core.info(`App Token Generated: ${auth_app_token.token}`);
-    core.info(`==> Bot user infomation setup`);
+    // Get Bot user infomation
+
+    core.info(`==> Getting User installation ID...`);
     let { data } = await request('GET /users/{username}/installation', {
       username: codeOwner,
       request: {
@@ -44873,7 +44874,6 @@ async function run() {
 
     core.setSecret(data.id);
     core.info(`==> Get User Installation ID: ${data.id}`);
-    //core.info(auth_user_token.token)
 
     const app = new App({
       appId: appID,
@@ -44902,10 +44902,15 @@ async function run() {
     core.info(`==> Commit Name: ${bot_user_name}`);
     core.info(`==> Commit-Address: ${bot_commit_address}`);
 
+    // Revoke User Installation Token
+
     core.info(`==> Revoke User Installation Token`);
     octokit.rest.apps.revokeInstallationAccessToken();
 
     core.info(`==> Token revoked`);
+
+    // Get Repository Installation Token
+
     core.info(`==> Generating Repository Token`);
 
     const response = await request('GET /repos/{owner}/{repo}/installation', {
