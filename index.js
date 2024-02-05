@@ -44915,7 +44915,7 @@ async function run() {
 
     const response = await request('GET /repos/{owner}/{repo}/installation', {
       owner: codeOwner,
-      repo: parsedRepository,
+      repo: parsedRepository.split(',')[0],
       request: {
         hook: auth.hook,
       },
